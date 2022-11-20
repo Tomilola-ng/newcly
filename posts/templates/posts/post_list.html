@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load blog_tags %}
+
+{% block content %}
+<style>
+    svg {
+        fill: gray;
+    }
+    a.active-posts svg, .active-posts {
+        color: var(--col);
+        fill: var(--col);
+        animation: anim--right-in 500ms ease;
+    }
+</style>
+<main id="user--page" class="container mxw-400 lg_mxw-450 m-auto lg_ml-0">
+    <article class="m-auto p-2 mbt-2">
+        <div class="w-100 bdrs-pill bx-sh p-1 plr-2 fs-7 mb-4 mxw-400">
+            <a href="{% url 'postcreate' %} " class="f-gray">
+                Do you have something to share ?
+            </a>
+        </div>
+        {% for object in objects %}
+            <div class="mxw-400 p-2 bx-sh bdrs ">
+                <span class="w-100 fs-7 f-gray">
+                    {{ object.author }} on {{ object.date | date:'M d o' }}
+                    <br>
+                    {% for tag in object.Hashtags.all %}
+                        <a href="" class="f-blue">
+                            {{ tag }}
+                            {% if not forloop.last %},
+                            {% endif %}
+                        </a>
+                    {% endfor %}
+                </span>
+                
+                <div class="pbt-3">
+                    <a href="{% url 'postdetail' object.title %}" class="w-100 bold">
+                        {{ object.title }}
+                    </a>
+                </div>
+                <hr>
+
+                <aside class="w-100 fs-7 dp-flex jc-sa ai-c pbt-1">
+                    <a class="w-5 col pr-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                          </svg>
+                          {{ number_of_likes }}
+                        </a>
+                    <div class="w-5 col pr-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-text" viewBox="0 0 16 16">
+                            <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
+                            <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                          </svg>
+                    </div>
+                    <div class="w-5 col pr-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                          </svg>
+                    </div>
+                    <div class="w-5 col pr-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                          </svg>
+                    </div>
+                    <a 
+                    href="{% url 'postdetail' object.title %}" 
+                    class="bg-col plr-2 pbt-1 bdrs-pill f-white fs-8">
+                        Read &raquo;
+                    </a>
+                </aside>
+            </div>
+            <br>
+        {% endfor %}
+
+        <div>
+            <a 
+            {% if objects.has_previous %}
+            href="?page={{ objects.previous_page_number }}"
+            class="bg-col f-white bdrs p-1 fs-7 mr-2"
+            {% else %}
+            class="bg-black f-gray bdrs p-1 fs-7 mr-2"
+            {% endif %}
+            > &laquo; Back </a>
+    
+            <a 
+            {% if objects.has_next %}
+            href="?page={{ objects.next_page_number }}"
+            class="bg-col f-white bdrs p-1 fs-7 mr-2"
+            {% else %}
+            class="bg-black f-gray bdrs p-1 fs-7 mr-2"
+            {% endif %}
+            > Next &raquo; </a>
+        </div>
+    
+    </article>
+</main>
+{% endblock content %}
+

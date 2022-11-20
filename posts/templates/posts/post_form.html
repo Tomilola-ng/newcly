@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% block content %}
+<main class="container mxw-400 m-auto lg_ml-0">
+  <article class="m-auto p-2 mbt-2">
+    <form method="POST">
+      {% csrf_token %}
+      <a class="bold"> New Post </a>
+      <div class="col mbt-2">
+        <li class="fs-7 as-fs pl-3 f-gray">Must be an educated related post</li>
+        <li class="fs-7 as-fs pl-3 f-gray">Avoid use of vulgar words</li>
+      </div>
+      {{ form.as_p }}
+      <div class="dp-flex ai-c w-95 jc-sb lg_w-90 mt-1">
+        <button type="submit" class="bg-green bdrs-pill f-white as-fs plr-2">
+          Post Now
+        </button>
+      </div>
+    </form>
+  </article>
+</main>
+{% endblock content %}
